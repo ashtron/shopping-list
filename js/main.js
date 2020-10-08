@@ -13,6 +13,7 @@ window.onload = () => {
     const items = [];
 
     getItems();
+    itemInput.focus();
     
     function getItems() {
         shoppingList.innerHTML = "";
@@ -48,6 +49,8 @@ window.onload = () => {
             .then(response => {
                 items.push(new shoppingListItem(response.data.id, response.data.fields.item));
                 shoppingList.append(createItemElement(newItem));
+                itemInput.value = "";
+                itemInput.focus();
             });
     }
 
