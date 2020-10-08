@@ -1,19 +1,23 @@
 window.onload = () => {
     const airtableApiKey = config.AIRTABLE_API_KEY;
-    const airtableApi = `https://api.airtable.com/v0/appW7LfolPCsDiVXX/Table%201?api_key=${airtableApiKey}`;
+    const airtableApiUrl = `https://api.airtable.com/v0/appW7LfolPCsDiVXX/Table%201?api_key=${airtableApiKey}`;
 
     const shoppingList = document.getElementById("shopping-list");
     const itemInput = document.getElementById("item-input");
     const saveButton = document.getElementById("save-button");
-
-    const items = [];
+    const reloadButton = document.getElementById("reload-button");
 
     saveButton.addEventListener("click", addItem);
+    reloadButton.addEventListener("click", getItems);
+
+    const items = [];
 
     getItems();
     
     function getItems() {
-        axios.get(airtableApi)
+        shoppingList.innerHTML = "";
+
+        axios.get(airtableApiUrl)
             .then(response => {
                 response.data.records.forEach(item => {
                     items.push(new shoppingListItem(item.id, item.fields.item));
@@ -30,21 +34,19 @@ window.onload = () => {
             return item.item === itemElement.innerText;
         });
 
-        axios.delete(`https://api.airtable.com/v0/appW7LfolPCsDiVXX/Table%201/${item.id}?api_key=${airtableApiKey}`)
-            .then(response => {
-                itemElement.parentNode.removeChild(itemElement);
-            });
+        axios.delete(`https://api.airtable.com/v0/appW7LfolPCsDiVXX/Table%201/${item.id}?api_key=${airtableApiKey}`);
     }
 
     function addItem(event) {
         const newItem = itemInput.value;
 
-        axios.post(airtableApi, {
+        axios.post(airtableApiUrl, {
                 "fields": {
                     "item": newItem
                 }
             })
             .then(response => {
+                items.push(new shoppingListItem(response.data.id, response.data.fields.item));
                 shoppingList.append(createItemElement(newItem));
             });
     }

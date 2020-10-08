@@ -13,3 +13,7 @@ ul {
 .strikethrough {
     text-decoration: line-through;
 }
+
+#item-input {
+    margin-bottom: 10px;
+}
