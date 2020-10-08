@@ -1,0 +1,19 @@
+.container {
+    max-width: 175px;
+    margin: 0 auto;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0px;
+    text-align: center;
+    line-height: 1.6em;
+}
+  
+h2 {
+    text-align: center;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
