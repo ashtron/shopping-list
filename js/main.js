@@ -9,6 +9,10 @@ window.onload = () => {
 
     saveButton.addEventListener("click", addItem);
     reloadButton.addEventListener("click", getItems);
+    itemInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter")
+            addItem();
+    });
 
     const shoppingListItems = [];
 
