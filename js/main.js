@@ -44,9 +44,10 @@ window.onload = () => {
         });
     }
 
-    function createItemElement(item) {
+    function createItemElement(item, id) {
         const newItem = document.createElement("li");
         newItem.classList.add("shopping-list-item");
+        newItem.id = id;
         newItem.innerText = item;
 
         newItem.addEventListener("click", event => {
@@ -68,7 +69,7 @@ window.onload = () => {
             }).then(response => {
                 shoppingListItems.push(new shoppingListItem(response.data.id, response.data.fields.item));
 
-                shoppingList.append(createItemElement(newItemName));
+                shoppingList.append(createItemElement(newItemName, response.data.id));
 
                 itemInput.value = "";
                 itemInput.focus();
@@ -78,9 +79,13 @@ window.onload = () => {
     }
 
     function removeItem(itemElement) {
+        console.log("itemElement: ", itemElement);
+
         const item = shoppingListItems.find(item => {
-            return item.item === itemElement.innerText;
+            return item.id === itemElement.id;
         });
+
+        console.log("item: ", item);
 
         axios.delete(airtableApiUrl + `/${item.id}` + `?api_key=${airtableApiKey}`)
             .catch(error => {
