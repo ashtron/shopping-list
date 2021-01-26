@@ -36,12 +36,13 @@ window.onload = () => {
     }
 
     function updateDomList(retrievedItems) {
+        console.log("items: ", retrievedItems)
         shoppingList.innerHTML = "";
 
         retrievedItems.forEach(item => {
             shoppingListItems.push(new shoppingListItem(item.id, item.fields.item));
 
-            let newItemElement = createItemElement(item.fields.item);
+            let newItemElement = createItemElement(item.fields.item, item.id);
             shoppingList.append(newItemElement);
         });
     }
