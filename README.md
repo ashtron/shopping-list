@@ -1,5 +1,5 @@
 # To Do
 
-* Make it prettier
 * Preserve list order
 * Block duplicates
+* Use npm to install axios

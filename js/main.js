@@ -24,7 +24,9 @@ window.onload = () => {
     }
     
     function getItems() {
-        axios.get(airtableApiUrl + `?api_key=${airtableApiKey}`)
+        const queryString = "sort%5B0%5D%5Bfield%5D=date&sort%5B0%5D%5Bdirection%5D=asc"
+
+        axios.get(airtableApiUrl + `?api_key=${airtableApiKey}&${queryString}`)
             .then(response => {
                 updateDomList(response.data.records);
             })
@@ -62,9 +64,15 @@ window.onload = () => {
     function addItem(event) {
         const newItemName = itemInput.value;
 
+        const newDate = new Date()
+        const hours = newDate.getHours()
+        const minutes = `${newDate.getMinutes() < 10 ? "0" : ""}${newDate.getMinutes()}`
+        const dateString = newDate.toDateString()
+
         axios.post(airtableApiUrl + `?api_key=${airtableApiKey}`, {
                 "fields": {
-                    "item": newItemName
+                    "item": newItemName,
+                    "date": newDate.toISOString()
                 }
             }).then(response => {
                 shoppingListItems.push(new shoppingListItem(response.data.id, response.data.fields.item));
